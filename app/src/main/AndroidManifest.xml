@@ -12,10 +12,10 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.ChannelMePerfect"
         tools:targetApi="31">
+
         <activity
             android:name=".MainActivity"
             android:exported="true"
-            android:label="@string/app_name"
             android:theme="@style/Theme.ChannelMePerfect">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -23,6 +23,27 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
+        <service
+            android:name=".services.MessagingService"
+            android:exported="false">
+            <intent-filter>
+                <action android:name="com.google.firebase.MESSAGING_EVENT" />
+            </intent-filter>
+        </service>
+
+        <!-- (Optional) From Android 8.0 (API level 26) and higher,
+        notification channels are supported and recommended. FCM provides a
+        default notification channel with basic settings. If you prefer to
+        create and use your own default channel, set default_notification_channel_id
+        to the ID of your notification channel object as shown; FCM will use this
+        value whenever incoming messages do not explicitly set a notification channel.
+        To learn more, see Manage notification channels.
+        See https://firebase.google.com/docs/cloud-messaging/android/client?authuser=0&hl=en#manifest
+        -->
+        <meta-data
+            android:name="com.google.firebase.messaging.default_notification_channel_id"
+            android:value="@string/default_notification_channel_id" />
     </application>
 
 </manifest>
