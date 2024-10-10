@@ -9,6 +9,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.text.selection.SelectionContainer
 import androidx.compose.material3.Button
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
@@ -23,9 +24,16 @@ import com.example.channelmeperfect.R
 import com.example.channelmeperfect.ui.theme.ChannelMePerfectTheme
 
 @Composable
-fun NotificationPermissionRationale() {
+fun NotificationPermissionRationale(
+    isNotificationPermissionGranted: Boolean,
+    isRationaleFlowDenied: Boolean,
+    onRationaleFlowGranted: () -> Unit,
+    onRationaleFlowDenied: () -> Unit,
+    fcmToken: String? = null,
+    modifier: Modifier = Modifier
+) {
     Column(
-        modifier = Modifier
+        modifier = modifier
             .fillMaxSize()
             .padding(16.dp),
         horizontalAlignment = Alignment.CenterHorizontally,
@@ -73,19 +81,103 @@ fun NotificationPermissionRationale() {
 
         Spacer(modifier = Modifier.height(32.dp))
 
-        Button(
-            onClick = { /* Handle user's decision to grant permissions */ },
-            modifier = Modifier.fillMaxWidth()
-        ) {
-            Text("Grant Permissions")
+        if (isNotificationPermissionGranted) {
+            Text(
+                text = "Notification permission has been granted.",
+                style = MaterialTheme.typography.bodyLarge,
+                textAlign = TextAlign.Center
+            )
+        } else if (isRationaleFlowDenied) {
+            Text(
+                text = "Notification permission has been denied. Please enable in settings.",
+                style = MaterialTheme.typography.bodyLarge,
+                textAlign = TextAlign.Center
+            )
+        } else {
+            Button(
+                onClick = {
+                    onRationaleFlowGranted()
+                },
+                modifier = Modifier.fillMaxWidth()
+            ) {
+                Text("Grant Permissions")
+            }
+
+            Button(
+                onClick = {
+                    onRationaleFlowDenied()
+                },
+                modifier = Modifier.fillMaxWidth()
+            ) {
+                Text("No Thanks")
+            }
         }
+
+        Spacer(modifier = Modifier.height(32.dp))
+
+        if (!fcmToken.isNullOrEmpty()) {
+            SelectionContainer {
+                Text(
+                    text = "Your FCM Token: $fcmToken",
+                    style = MaterialTheme.typography.bodyMedium,
+                    textAlign = TextAlign.Center
+                )
+            }
+        }
+    }
+}
+
+@Composable
+fun Greeting(name: String, modifier: Modifier = Modifier) {
+    Text(
+        text = "Hello $name!",
+        modifier = modifier
+    )
+}
+
+@Preview(showBackground = true)
+@Composable
+fun GreetingPreview() {
+    ChannelMePerfectTheme {
+        Greeting("Android")
     }
 }
 
 @Preview(showBackground = true)
 @Composable
-fun NotificationPermissionRationalePreview() {
+fun NotificationPermissionRationaleNotGrantedPreview() {
     ChannelMePerfectTheme {
-        NotificationPermissionRationale()
+        NotificationPermissionRationale(
+            isNotificationPermissionGranted = false,
+            isRationaleFlowDenied = true,
+            onRationaleFlowGranted = {},
+            onRationaleFlowDenied = {}
+        )
+    }
+}
+
+@Preview(showBackground = true)
+@Composable
+fun NotificationPermissionRationaleGrantedPreview() {
+    ChannelMePerfectTheme {
+        NotificationPermissionRationale(
+            isNotificationPermissionGranted = true,
+            isRationaleFlowDenied = true,
+            onRationaleFlowGranted = {},
+            onRationaleFlowDenied = {}
+        )
+    }
+}
+
+@Preview(showBackground = true)
+@Composable
+fun NotificationPermissionRationaleFlowDeniedPreview() {
+    ChannelMePerfectTheme {
+        NotificationPermissionRationale(
+            isNotificationPermissionGranted = false,
+            isRationaleFlowDenied = true,
+            onRationaleFlowGranted = {},
+            onRationaleFlowDenied = {}
+        )
     }
 }
