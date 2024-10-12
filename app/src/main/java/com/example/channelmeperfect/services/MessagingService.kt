@@ -20,6 +20,8 @@ class MessagingService : FirebaseMessagingService() {
 
         val data = message.data
 
+        val title = data["title"] ?: message.notification?.title
+        val body = data["body"] ?: message.notification?.body
         val channelId = data["channel_id"] ?: ""
         val channelName = data["channel_name"] ?: ""
         val channelDescription = data["channel_description"] ?: ""
@@ -35,8 +37,8 @@ class MessagingService : FirebaseMessagingService() {
         }
 
         val notificationBuilder = NotificationCompat.Builder(this, channelId)
-            .setContentTitle(message.notification?.title)
-            .setContentText(message.notification?.body)
+            .setContentTitle(title)
+            .setContentText(body)
             .setSmallIcon(R.drawable.ic_launcher_foreground)
             .build()
 
