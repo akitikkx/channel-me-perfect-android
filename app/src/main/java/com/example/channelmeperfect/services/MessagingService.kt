@@ -26,10 +26,19 @@ class MessagingService : FirebaseMessagingService() {
         super.onMessageReceived(message)
 
         val data = message.data
-        val notifyChannel = data["channel_id"]?.let { NotificationChannels.fromString(it) }
 
+        handleMessageData(message = message, data = data)
+    }
+
+    @RequiresApi(Build.VERSION_CODES.O)
+    private fun handleMessageData(
+        message: RemoteMessage,
+        data: Map<String, String>
+    ) {
         val title = data["title"] ?: message.notification?.title
         val body = data["body"] ?: message.notification?.body
+
+        val notifyChannel = data["channel_id"]?.let { NotificationChannels.fromString(it) }
 
         val notificationManager =
             getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
