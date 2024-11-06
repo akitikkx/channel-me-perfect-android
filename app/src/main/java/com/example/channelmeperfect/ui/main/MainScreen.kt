@@ -68,7 +68,7 @@ fun MainScreen(
 
         Spacer(modifier = Modifier.height(32.dp))
 
-        if (!fcmToken.isNullOrEmpty()) {
+        if (isNotificationPermissionGranted && !fcmToken.isNullOrEmpty()) {
             TokenArea(fcmToken) { text ->
                 clipboardManager.setText(AnnotatedString(text))
             }
