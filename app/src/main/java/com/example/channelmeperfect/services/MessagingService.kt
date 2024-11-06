@@ -3,7 +3,6 @@ package com.example.channelmeperfect.services
 import android.app.NotificationChannel
 import android.app.NotificationManager
 import android.app.PendingIntent
-import android.content.Context
 import android.content.Intent
 import android.os.Build
 import androidx.annotation.RequiresApi
@@ -19,6 +18,7 @@ class MessagingService : FirebaseMessagingService() {
 
     override fun onNewToken(token: String) {
         super.onNewToken(token)
+        // Do something with the token, e.g send to server
     }
 
     @RequiresApi(Build.VERSION_CODES.O)
@@ -41,7 +41,7 @@ class MessagingService : FirebaseMessagingService() {
         val notifyChannel = data["channel_id"]?.let { NotificationChannels.fromString(it) }
 
         val notificationManager =
-            getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
+            getSystemService(NOTIFICATION_SERVICE) as NotificationManager
 
         val channel = createChannel(
             notifyChannel = notifyChannel,
